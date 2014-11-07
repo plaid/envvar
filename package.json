@@ -12,7 +12,7 @@
     "istanbul": "0.3.x",
     "jshint": "2.5.x",
     "mocha": "2.x.x",
-    "xyz": "0.4.x"
+    "xyz": "0.5.x"
   },
   "files": [
     "/README.md",
