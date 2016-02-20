@@ -12,44 +12,83 @@ ValueError.prototype.name = 'ValueError';
 exports.ValueError = ValueError;
 
 
-function def(type, coerce) {
+var createUnsetVariableError = function(name) {
+  return new UnsetVariableError(
+    'No environment variable named "' + name + '"'
+  );
+};
+
+var checkDefaultValueType = function(name, typeName, value) {
+  if (Object.prototype.toString.call(value) !== '[object ' + typeName + ']') {
+    throw new TypeError(
+      'Default value of process.env["' + name + '"] is not of type ' + typeName
+    );
+  }
+};
+
+var def = function(typeName, coerce) {
   return function(name, value) {
-    if (arguments.length < 2) {
-      if (!Object.prototype.hasOwnProperty.call(process.env, name)) {
-        throw new UnsetVariableError(
-          'No environment variable named "' + name + '"'
-        );
-      }
-    } else {
-      if (!(Object(value) instanceof type)) {
-        throw new TypeError(
-          'Default value of process.env["' + name + '"] is not of type ' +
-          type.name
-        );
-      }
-      if (!Object.prototype.hasOwnProperty.call(process.env, name)) {
-        return value;
-      }
+    var n = arguments.length;
+    if (n < 1) throw new Error('Too few arguments');
+    if (n > 2) throw new Error('Too many arguments');
+
+    if (n === 2) checkDefaultValueType(name, typeName, value);
+
+    if (!Object.prototype.hasOwnProperty.call(process.env, name)) {
+      if (n === 2) return value;
+      throw createUnsetVariableError(name);
     }
+
     return coerce(name, process.env[name]);
   };
-}
+};
 
-
-exports.boolean = def(Boolean, function(name, value) {
+exports.boolean = def('Boolean', function(name, value) {
   if (value === 'true') return true;
   if (value === 'false') return false;
   throw new ValueError(
-    'Value of process.env["' + name + '"] is neither "true" nor "false"');
+    'Value of process.env["' + name + '"] is neither "true" nor "false"'
+  );
 });
 
-exports.number = def(Number, function(name, value) {
+exports.number = def('Number', function(name, value) {
   var num = Number(value);
   if (num === num) return num;
   throw new ValueError(
-    'Value of process.env["' + name + '"] does not represent a number');
+    'Value of process.env["' + name + '"] does not represent a number'
+  );
 });
 
-exports.string = def(String, function(name, value) {
+exports.string = def('String', function(name, value) {
   return value;
 });
+
+exports.enum = function(name, members, value) {
+  var n = arguments.length;
+  if (n < 2) throw new Error('Too few arguments');
+  if (n > 3) throw new Error('Too many arguments');
+
+  members.forEach(function(member) {
+    if (Object.prototype.toString.call(member) !== '[object String]') {
+      throw new TypeError(
+        'Enumerated types must consist solely of string values'
+      );
+    }
+  });
+
+  if (n === 3) checkDefaultValueType(name, 'String', value);
+
+  if (!Object.prototype.hasOwnProperty.call(process.env, name)) {
+    if (n === 3) return value;
+    throw createUnsetVariableError(name);
+  }
+
+  if (members.indexOf(process.env[name]) < 0) {
+    throw new ValueError(
+      'Value of process.env["' + name + '"] ' +
+      'is not a member of (' + members.join(' | ') + ')'
+    );
+  }
+
+  return process.env[name];
+};
