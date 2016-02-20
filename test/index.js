@@ -93,7 +93,7 @@ describe('envvar.boolean', function() {
     eq(envvar.boolean('FOO', false), false);
   });
 
-  it('throws a ValueError if default value is not Boolean', function() {
+  it('throws a TypeError if default value is not Boolean', function() {
     assert.throws(function() { envvar.boolean('FOO', 'true'); }, createMatcher(
       TypeError,
       'Default value of process.env["FOO"] is not of type Boolean'
@@ -134,7 +134,7 @@ describe('envvar.number', function() {
     eq(envvar.number('FOO', 42), 123.45);
   });
 
-  it('throws a ValueError if default value is not a number', function() {
+  it('throws a TypeError if default value is not a number', function() {
     assert.throws(function() { envvar.number('FOO', '42'); }, createMatcher(
       TypeError,
       'Default value of process.env["FOO"] is not of type Number'
@@ -167,7 +167,7 @@ describe('envvar.string', function() {
     eq(envvar.string('FOO', 'quux'), 'baz');
   });
 
-  it('throws a ValueError if default value is not a string', function() {
+  it('throws a TypeError if default value is not a string', function() {
     assert.throws(function() { envvar.string('FOO', 42); }, createMatcher(
       TypeError,
       'Default value of process.env["FOO"] is not of type String'
