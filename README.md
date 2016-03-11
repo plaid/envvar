@@ -4,11 +4,11 @@ envvar is a tiny JavaScript package for deriving JavaScript values from
 environment variables.
 
 ```javascript
-var envvar = require('envvar');
+const envvar = require('envvar');
 
-var GITHUB_API_TOKEN = envvar.string('GITHUB_API_TOKEN');
-var HTTP_MAX_SOCKETS = envvar.number('HTTP_MAX_SOCKETS');
-var ENABLE_FEATURE_X = envvar.boolean('ENABLE_FEATURE_X', false);
+const GITHUB_API_TOKEN = envvar.string('GITHUB_API_TOKEN');
+const HTTP_MAX_SOCKETS = envvar.number('HTTP_MAX_SOCKETS');
+const ENABLE_FEATURE_X = envvar.boolean('ENABLE_FEATURE_X', false);
 ```
 
 If one argument is provided the environment variable is __required__. If the
@@ -30,4 +30,23 @@ a suitable value, an `envvar.ValueError` is thrown:
 
     ValueError: Value of process.env["HTTP_MAX_SOCKETS"] does not represent a number
 
-That's all there is to it.
+### `envvar.enum`
+
+This is similar to `envvar.string`, but with constraints. There may be a small
+number of valid values for a given environment variable. For example:
+
+```javascript
+const NODE_ENV = envvar.enum('NODE_ENV', ['development', 'staging', 'production']);
+```
+
+This states that `process.env.NODE_ENV` must be set to `development`,
+`staging`, or `production`.
+
+A default value may be provided:
+
+```javascript
+const NODE_ENV = envvar.enum('NODE_ENV', ['development', 'staging', 'production'], 'production');
+```
+
+This states that `process.env.NODE_ENV` must either be unset (in which case the
+default value is assumed), or set to `development`, `staging`, or `production`.

@@ -1,7 +1,16 @@
+dependencies:
+  override:
+    - make setup
+
 machine:
   node:
-    version: 0.10.28
+    version: 0.10.34
 
 test:
   override:
-    - make test lint
+    - make lint
+    - make test
+    - nvm install 0.12.7
+    - nvm use 0.12.7 && rm -r node_modules && make setup test
+    - nvm use 4 && rm -r node_modules && make setup test
+    - nvm use 5 && rm -r node_modules && make setup test
