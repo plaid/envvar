@@ -30,13 +30,13 @@ a suitable value, an `envvar.ValueError` is thrown:
 
     ValueError: Value of process.env["HTTP_MAX_SOCKETS"] does not represent a number
 
-### `envvar.enum`
+### `envvar.oneOf`
 
 This is similar to `envvar.string`, but with constraints. There may be a small
 number of valid values for a given environment variable. For example:
 
 ```javascript
-const NODE_ENV = envvar.enum('NODE_ENV', ['development', 'staging', 'production']);
+const NODE_ENV = envvar.oneOf('NODE_ENV', ['development', 'staging', 'production']);
 ```
 
 This states that `process.env.NODE_ENV` must be set to `development`,
@@ -45,7 +45,7 @@ This states that `process.env.NODE_ENV` must be set to `development`,
 A default value may be provided:
 
 ```javascript
-const NODE_ENV = envvar.enum('NODE_ENV', ['development', 'staging', 'production'], 'production');
+const NODE_ENV = envvar.oneOf('NODE_ENV', ['development', 'staging', 'production'], 'production');
 ```
 
 This states that `process.env.NODE_ENV` must either be unset (in which case the

@@ -205,53 +205,53 @@ describe('envvar.string', function() {
 });
 
 
-describe('envvar.enum', function() {
+describe('envvar.oneOf', function() {
 
   it('throws if applied to too few arguments', function() {
-    throws(function() { envvar.enum(); },
+    throws(function() { envvar.oneOf(); },
            errorEq(Error, 'Too few arguments'));
-    throws(function() { envvar.enum(1); },
+    throws(function() { envvar.oneOf(1); },
            errorEq(Error, 'Too few arguments'));
   });
 
   it('throws if applied to too many arguments', function() {
-    throws(function() { envvar.enum(1, 2, 3, 4); },
+    throws(function() { envvar.oneOf(1, 2, 3, 4); },
            errorEq(Error, 'Too many arguments'));
   });
 
   it('throws a TypeError if the type contains non-string members', function() {
-    throws(function() { envvar.enum('FOO', ['0', '1', 2]); },
+    throws(function() { envvar.oneOf('FOO', ['0', '1', 2]); },
            errorEq(TypeError,
                    'Enumerated types must consist solely of string values'));
-    throws(function() { envvar.enum('FOO', ['0', '1', 2], '0'); },
+    throws(function() { envvar.oneOf('FOO', ['0', '1', 2], '0'); },
            errorEq(TypeError,
                    'Enumerated types must consist solely of string values'));
   });
 
   it('throws a TypeError if default value is not a string', function() {
-    throws(function() { envvar.enum('FOO', ['0', '1', '2'], 0); },
+    throws(function() { envvar.oneOf('FOO', ['0', '1', '2'], 0); },
            errorEq(TypeError,
                    'Default value of process.env["FOO"] ' +
                    'is not of type String'));
   });
 
   it('returns default value if variable is not set', function() {
-    eq(envvar.enum('FOO', ['0', '1', '2'], '0'), '0');
+    eq(envvar.oneOf('FOO', ['0', '1', '2'], '0'), '0');
   });
 
   it('throws an UnsetVariableError if variable is not set', function() {
-    throws(function() { envvar.enum('FOO', ['0', '1', '2']); },
+    throws(function() { envvar.oneOf('FOO', ['0', '1', '2']); },
            errorEq(envvar.UnsetVariableError,
                    'No environment variable named "FOO"'));
   });
 
   it('throws a ValueError if value is not a member of the type', function() {
     process.env.FOO = 'X';
-    throws(function() { envvar.enum('FOO', ['0', '1', '2']); },
+    throws(function() { envvar.oneOf('FOO', ['0', '1', '2']); },
            errorEq(envvar.ValueError,
                    'Value of process.env["FOO"] ' +
                    'is not a member of (0 | 1 | 2)'));
-    throws(function() { envvar.enum('FOO', ['0', '1', '2'], '0'); },
+    throws(function() { envvar.oneOf('FOO', ['0', '1', '2'], '0'); },
            errorEq(envvar.ValueError,
                    'Value of process.env["FOO"] ' +
                    'is not a member of (0 | 1 | 2)'));
@@ -259,7 +259,7 @@ describe('envvar.enum', function() {
 
   it('returns value', function() {
     process.env.FOO = '2';
-    eq(envvar.enum('FOO', ['0', '1', '2']), '2');
+    eq(envvar.oneOf('FOO', ['0', '1', '2']), '2');
   });
 
 });
