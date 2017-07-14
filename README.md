@@ -1,4 +1,4 @@
-# envvar [![CircleCI](https://circleci.com/gh/plaid/envvar.svg?style=svg)](https://circleci.com/gh/plaid/envvar)
+# envvar [![CircleCI](https://img.shields.io/circleci/project/github/plaid/envvar.svg)](https://circleci.com/gh/plaid/envvar)
 
 envvar is a tiny JavaScript package for deriving JavaScript values from
 environment variables.
