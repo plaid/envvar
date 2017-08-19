@@ -63,7 +63,7 @@ exports.string = def('String', function(name, value) {
   return value;
 });
 
-exports.enum = function(name, members, value) {
+exports.oneOf = function(name, members, value) {
   var n = arguments.length;
   if (n < 2) throw new Error('Too few arguments');
   if (n > 3) throw new Error('Too many arguments');
