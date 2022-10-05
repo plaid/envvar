@@ -36,5 +36,7 @@ declare module 'envvar' {
    * @throws if the value of the environment variable is not one of the
    *         permissible strings.
    */
-  export function oneOf(name: string, allowedValues: Array<string>, defaultValue?: string): string;
+  export function oneOf<T extends string>(
+    name: string, allowedValues: Array<T>, defaultValue?: string,
+  ): T;
 }
