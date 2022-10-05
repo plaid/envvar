@@ -1,6 +1,6 @@
 {
   "name": "envvar",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Derive JavaScript values from environment variables",
   "license": "MIT",
   "repository": {
@@ -20,5 +20,8 @@
     "/index.js",
     "/package.json"
   ],
-  "types": "./index.d.ts"
+  "types": "./index.d.ts",
+  "scripts": {
+    "test": "make test"
+  }
 }
