@@ -19,5 +19,6 @@
     "/index.d.ts",
     "/index.js",
     "/package.json"
-  ]
+  ],
+  "types": "./index.d.ts"
 }
