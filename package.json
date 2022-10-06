@@ -19,9 +19,5 @@
     "/index.d.ts",
     "/index.js",
     "/package.json"
-  ],
-  "types": "./index.d.ts",
-  "scripts": {
-    "test": "make test"
-  }
+  ]
 }
